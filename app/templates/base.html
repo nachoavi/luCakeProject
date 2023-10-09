@@ -24,7 +24,7 @@
             <h1 class="fw-bold">Las <span class="special-text">Unionas</span></h1>
             <nav class="mt-5 d-flex flex-column h-100">
                 <ul class="d-flex flex-column gap-5 align-items-start justify-content-center">
-                    <li><i class="fa-solid fa-user-plus fa-sm"></i><a href="">Usuarios</a></li>
+                    <li><i class="fa-solid fa-user-plus fa-sm"></i><a href="{%url 'usersTable'%}">Usuarios</a></li>
                     <li><i class="fa-solid fa-shop fa-sm"></i><a href="">Ventas</a></li>
                     <li><i class="fa-solid fa-cookie fa-lg"></i><a href="">Recetas</a></li>
                     <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="">Clientes</a></li>
@@ -62,7 +62,7 @@
     
             </header>
 
-            <div class="layout-content" id="layout-content">
+            <div class="layout-content p-3" id="layout-content">
                 
                 {% block content %}
 

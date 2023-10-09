@@ -7,3 +7,9 @@ def baseHTML(request):
 
 def home(request):
     return render(request,'home.html')
+
+def usersTable(request):
+    return render(request,'users/usersTable.html')
+
+def usersForm(request):
+    return render(request,'users/usersForm.html')
