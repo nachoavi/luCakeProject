@@ -21,10 +21,20 @@
           <label for="inputPassword" class="form-label">Contraseña</label>
           <input type="password" class="form-control" id="exampleInputPassword">
         </div>
-        <div class="text-center">
+        <div>
+          <label for="inputUserType" class="form-label">Tipo de usuario</label>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Seleccione un tipo de usuario</option>
+            <option value="1">Normal</option>
+            <option value="2">Administrador</option>
+          </select>
+        </div>
+
+        <div class="text-center pt-4">
           <a class="btn btn-primary" href="{% url 'usersTable'%}">Volver</a>
           <button type="submit" class="btn btn-primary text-center">Crear</button>
         </div>
+
       </form>
 
 </div>
