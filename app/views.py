@@ -17,6 +17,18 @@ def usersTable(request):
 def usersForm(request):
     return render(request,'users/usersForm.html')
 
+def productsTable(request):
+    return render(request,'products/productsTable.html')
+
+def productsForm(request):
+    return render(request,'products/productsForm.html')
+
+def salesTable(request):
+    return render(request,'sales/salesTable.html')
+
+def sell(request):
+    return render(request,'sales/sell.html')
+
 def clientContacts(request):
     return render(request,'clientContacts/clientContactsTable.html')
 
