@@ -16,3 +16,15 @@ def usersTable(request):
 
 def usersForm(request):
     return render(request,'users/usersForm.html')
+
+def clientContacts(request):
+    return render(request,'clientContacts/clientContactsTable.html')
+
+def clientContactsForm(request):
+    return render(request,'clientContacts/clientContactsForm.html')
+
+def recipes(request):
+    return render(request,'recipes/recipes.html')
+
+def recipesForm(request):
+    return render(request,'recipes/recipesForm.html')

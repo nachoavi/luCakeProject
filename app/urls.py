@@ -8,4 +8,8 @@ urlpatterns = [
     path('signin/',views.signin,name='signin'),
     path('users/',views.usersTable,name='usersTable'),
     path('usersForm/',views.usersForm,name='usersForm'),
+    path('clientContacts/',views.clientContacts,name='clientContacts'),
+    path('clientContactsFomr/',views.clientContactsForm,name='clientContactsForm'),
+    path('recipes/',views.recipes,name='recipes'),
+    path('recipesForm/',views.recipesForm,name='recipesForm'),
 ]

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+    <div class="p-3">
+        <h1>Registro de clientes</h1>
+    </div>
+    <form>
+        <div class="mb-3">
+          <label for="inputName" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="inputName">
+        </div>
+        <div class="mb-3">
+          <label for="inputLastName" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="inputLastName">
+        </div>
+        <div class="mb-3">
+          <label for="inputEmail" class="form-label">Correo</label>
+          <input type="email" class="form-control" id="inputEmail">
+        </div>
+        <div class="mb-3">
+          <label for="inputRut" class="form-label">RUT</label>
+          <input type="text" class="form-control" id="InputRut">
+        </div>
+        <div class="mb-3">
+          <label for="inputPhone" class="form-label">Teléfono</label>
+          <input type="text" class="form-control" id="InputPhone">
+        </div>
+        
+        <div class="text-center pt-4">
+          <a class="btn btn-primary" href="{% url 'clientContacts'%}">Volver</a>
+          <button type="submit" class="btn btn-primary text-center">Registrar</button>
+        </div>
+
+      </form>
+
+</div>
+
+
+{% endblock content %}
