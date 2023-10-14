@@ -18,9 +18,16 @@
             </tr>
         </thead>
         <tbody>
+            {%for client in clients%}
             <tr>
-
+                <td>{{client.name}}</td>
+                <td>{{client.lastname}}</td>
+                <td>{{client.email}}</td>
+                <td>{{client.rut}}</td>
+                <td>{{client.phone}}</td>
+                <td><a class="btn btn-danger" href="#">Eliminar</a></td>
             </tr>
+            {%endfor%}
         </tbody>
     </table>
 </div>
@@ -31,4 +38,4 @@
 </div>
 
 
-{% endblock content %}
+{% endblock content %} 

@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404,redirect
+from .models import *
 
 # Create your views here.
 
@@ -30,10 +31,26 @@ def sell(request):
     return render(request,'sales/sell.html')
 
 def clientContacts(request):
-    return render(request,'clientContacts/clientContactsTable.html')
+    if request.method == 'GET':
+        clientsList = ClientContacts.objects.all()
+        return render(request,'clientContacts/clientContactsTable.html',{
+            'clients':clientsList
+        })
 
 def clientContactsForm(request):
-    return render(request,'clientContacts/clientContactsForm.html')
+    if request.method == 'GET':
+        return render(request,'clientContacts/clientContactsForm.html')
+    else:
+        newClient = ClientContacts.objects.create(
+            name=request.POST['name'],
+            lastname=request.POST['lastname'],
+            email=request.POST['email'],
+            rut=request.POST['rut'],
+            phone=request.POST['phone']
+        )
+        newClient.save()
+        return redirect('clientContacts')
+
 
 def recipes(request):
     return render(request,'recipes/recipes.html')

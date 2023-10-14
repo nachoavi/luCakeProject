@@ -15,6 +15,11 @@ class ClientContacts(models.Model):
     lastname = models.CharField(max_length=50,null=False)
     email = models.EmailField(max_length=100,null=False)
     rut = models.CharField(max_length=13,null=False)
+    phone = models.CharField(max_length=15,null='N/A')
+    
+    def __str__(self):
+        return self.name + " " + self.lastname
+    
     
 class Roles(models.TextChoices):
     ADMIN = 'Admin'
@@ -34,9 +39,8 @@ class UserCollaborator(models.Model):
     
     def __str__(self):
         return self.username
-    
-    
 
+    
 class Sales(models.Model):
     productName = models.CharField(max_length=100,null=False)
     amount = models.PositiveIntegerField(null=False)
@@ -44,3 +48,19 @@ class Sales(models.Model):
     subtotal = models.PositiveIntegerField(null=False)
     iva = models.PositiveBigIntegerField(null=False)
     total = models.PositiveIntegerField(null=False)
+
+
+class Ingredients(models.Model):
+    nombre = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.nombre
+         
+class Recipes(models.Model):
+    title = models.CharField(max_length=50,null=False)
+    ingredients = models.ManyToManyField(Ingredients)
+    directions = models.TextField(null=False)
+    
+    def __str__(self):
+        return self.title
+    
