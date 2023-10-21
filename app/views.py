@@ -37,9 +37,9 @@ def clientContacts(request):
             'clients':clientsList
         })
 
-def clientContactsForm(request):
+def createClientContacts(request):
     if request.method == 'GET':
-        return render(request,'clientContacts/clientContactsForm.html')
+        return render(request,'clientContacts/createClientContacts.html')
     else:
         newClient = ClientContacts.objects.create(
             name=request.POST['name'],
@@ -50,7 +50,25 @@ def clientContactsForm(request):
         )
         newClient.save()
         return redirect('clientContacts')
-
+    
+def updateClientContacts(request,id):
+    client = ClientContacts.objects.get(id=id)
+    if request.method == 'POST':
+        client.name = request.POST.get('name')
+        client.lastname = request.POST.get('lastname')
+        client.email = request.POST.get('email')
+        client.rut = request.POST.get('rut')
+        client.phone = request.POST.get('phone')
+        client.save()
+        return redirect('clientContacts')
+    
+    return render(request,'clientContacts/clientUpdate.html',{'client':client})
+   
+    
+def deleteClientContacts(request,id):
+    client = ClientContacts.objects.get(id=id)
+    client.delete()
+    return redirect("clientContacts")
 
 def recipes(request):
     return render(request,'recipes/recipes.html')

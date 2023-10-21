@@ -25,7 +25,11 @@
                 <td>{{client.email}}</td>
                 <td>{{client.rut}}</td>
                 <td>{{client.phone}}</td>
-                <td><a class="btn btn-danger" href="#">Eliminar</a></td>
+                <td>
+                    <a class="btn btn-primary" href="{%url 'updateClientContacts' client.id%}">Actualizar</a>
+                    <a class="btn btn-danger" href="{%url 'deleteClientContacts' client.id %}">Eliminar</a>
+                </td>
+                
             </tr>
             {%endfor%}
         </tbody>
@@ -33,8 +37,8 @@
 </div>
 
 <div>
-    <a class="btn btn-success" href="{% url 'home'%}">Volver</a>
-    <a class="btn btn-primary" href="{%url 'clientContactsForm'%}">Registrar cliente</a>
+    <a class="btn btn-success" href="{%url 'home'%}">Volver</a>
+    <a class="btn btn-primary" href="{%url 'createClientContacts'%}">Registrar cliente</a>
 </div>
 
 
