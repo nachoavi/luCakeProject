@@ -75,3 +75,44 @@ def recipes(request):
 
 def recipesForm(request):
     return render(request,'recipes/recipesForm.html')
+
+
+def suppliersTable(request):
+    if request.method == 'GET':
+        suppliersList = Suppliers.objects.all()
+        return render(request,'suppliers/suppliersTable.html',{
+            'suppliers':suppliersList
+        })
+
+def createSuppliers(request):
+    if request.method == 'GET':
+        return render(request,'suppliers/createSuppliers.html')
+    else:
+        newSupplier = Suppliers.objects.create(
+            name=request.POST['name'],
+            email=request.POST['email'],
+            phone=request.POST['phone'],
+            rut=request.POST['rut'],
+            address=request.POST['address'],
+            products=request.POST['products'])
+        newSupplier.save()
+        return redirect('suppliersTable')
+    
+def updateClientContacts(request,id):
+    client = ClientContacts.objects.get(id=id)
+    if request.method == 'POST':
+        client.name = request.POST.get('name')
+        client.lastname = request.POST.get('lastname')
+        client.email = request.POST.get('email')
+        client.rut = request.POST.get('rut')
+        client.phone = request.POST.get('phone')
+        client.save()
+        return redirect('clientContacts')
+    
+    return render(request,'clientContacts/clientUpdate.html',{'client':client})
+   
+    
+def deleteSuppliers(request,id):
+    supplier = Suppliers.objects.get(id=id)
+    supplier.delete()
+    return redirect("suppliersTable")

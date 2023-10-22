@@ -42,16 +42,17 @@ class UserCollaborator(models.Model):
 
     
 class Sales(models.Model):
-    productName = models.CharField(max_length=100,null=False)
+    product = models.ForeignKey(ProductsInventory, on_delete=models.PROTECT,null='N/A')
     amount = models.PositiveIntegerField(null=False)
     saleDate = models.DateTimeField(auto_now_add=True)
     subtotal = models.PositiveIntegerField(null=False)
     iva = models.PositiveBigIntegerField(null=False)
     total = models.PositiveIntegerField(null=False)
-
-
+    seller = models.ForeignKey(UserCollaborator,on_delete=models.PROTECT,null='N/A')
+    
+    
 class Ingredients(models.Model):
-    nombre = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     
     def __str__(self):
         return self.nombre
@@ -64,3 +65,14 @@ class Recipes(models.Model):
     def __str__(self):
         return self.title
     
+
+class Suppliers(models.Model):
+    name = models.CharField(max_length=60,null=False)
+    email = models.EmailField(max_length=60,null=False)
+    phone = models.CharField(max_length=20,null=True)
+    rut = models.CharField(max_length=15,null=False)
+    address = models.CharField(max_length=200,null=False)
+    products = models.CharField(max_length=200,null=False)
+    
+    
+

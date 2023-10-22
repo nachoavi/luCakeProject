@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+
+{% block content %}
+ 
+<div>
+    <h1>Listado de Proovedores</h1>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Phone</th>
+                <th>RUT</th>
+                <th>Dirección</th>
+                <th>Tipo de productos</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for supplier in suppliers%}
+            <tr>
+                <td>{{supplier.name}}</td>
+                <td>{{supplier.email}}</td>
+                <td>{{supplier.phone}}</td>
+                <td>{{supplier.rut}}</td>
+                <td>{{supplier.address}}</td>
+                <td>{{supplier.products}}</td>
+                <td>
+                    <a class="btn btn-primary" href="#">Actualizar</a>
+                    <a class="btn btn-danger" href="{%url 'deleteSuppliers' supplier.id%}">Eliminar</a>
+                </td>
+                
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a class="btn btn-success" href="{%url 'home'%}">Volver</a>
+    <a class="btn btn-primary" href="{%url 'createSuppliers'%}">Registrar Proovedor</a>
+</div>
+
+
+{% endblock content %} 

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+    
+    <div class="p-3">
+        <h1>Actualizar clientes</h1>
+    </div>
+    <form  method="POST">
+        {% csrf_token %}  
+        <div class="mb-3">
+          <label for="inputName" class="form-label">Nombre</label>
+          <input type="text" class="form-control" name="name" id="inputName" value="{{client.name}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputLastName" class="form-label">Apellido</label>
+          <input type="text" class="form-control" name="lastname" id="inputLastName" value="{{client.lastname}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputEmail" class="form-label">Correo</label>
+          <input type="email" class="form-control" name="email" id="inputEmail" value="{{client.email}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputRut" class="form-label">RUT</label>
+          <input type="text" class="form-control" name="rut" id="InputRut" value="{{client.rut}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputPhone" class="form-label">Teléfono</label>
+          <input type="text" class="form-control" name="phone" id="InputPhone" value="{{client.phone}}">
+        </div>
+        
+        <div class="text-center pt-4">
+          <a class="btn btn-primary" href="{% url 'clientContacts'%}">Volver</a>
+          <button type="submit" class="btn btn-primary text-center">Actualizar</button>
+        </div>
+
+      </form>
+
+</div>
+ 
+
+{% endblock content %}

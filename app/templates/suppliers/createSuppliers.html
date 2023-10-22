@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div> 
+    
+    <div class="p-3">
+        <h1>Registro de clientes</h1>
+    </div>
+    <form  method="POST">
+        {% csrf_token %}  
+        <div class="mb-3">
+          <label for="inputName" class="form-label">Nombre</label>
+          <input type="text" class="form-control" name="name" id="inputName">
+        </div>
+        <div class="mb-3">
+          <label for="inputEmail" class="form-label">Correo</label>
+          <input type="email" class="form-control" name="email" id="inputEmail">
+        </div>
+        <div class="mb-3">
+          <label for="inputPhone" class="form-label">Teléfono</label>
+          <input type="text" class="form-control" name="phone" id="InputPhone">
+        </div>
+        <div class="mb-3">
+          <label for="inputRut" class="form-label">RUT</label>
+          <input type="text" class="form-control" name="rut" id="InputRut">
+        </div>
+        <div class="mb-3">
+          <label for="inputAddres" class="form-label">Dirección</label>
+          <input type="text" class="form-control" name="address" id="InputAddress">
+        </div>
+        <div class="mb-3">
+          <label for="inputProducts" class="form-label">Tipo de productos</label>
+          <input type="text" class="form-control" name="products" id="InputProducts">
+        </div>
+        <div class="text-center pt-4">
+          <a class="btn btn-primary" href="{% url 'clientContacts'%}">Volver</a>
+          <button type="submit" class="btn btn-primary text-center">Registrar</button>
+        </div>
+
+      </form>
+
+</div>
+ 
+
+{% endblock content %}
