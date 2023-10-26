@@ -28,7 +28,7 @@
                 <td>{{supplier.address}}</td>
                 <td>{{supplier.products}}</td>
                 <td>
-                    <a class="btn btn-primary" href="#">Actualizar</a>
+                    <a class="btn btn-primary" href="{%url 'updateSuppliers' supplier.id%}">Actualizar</a>
                     <a class="btn btn-danger" href="{%url 'deleteSuppliers' supplier.id%}">Eliminar</a>
                 </td>
                 

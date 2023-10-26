@@ -3,42 +3,45 @@
 
 {% block content %}
 
-<div>
+<div> 
     
     <div class="p-3">
-        <h1>Actualizar clientes</h1>
+        <h1>Registro de clientes</h1>
     </div>
     <form  method="POST">
         {% csrf_token %}  
         <div class="mb-3">
           <label for="inputName" class="form-label">Nombre</label>
-          <input type="text" class="form-control" name="name" id="inputName" value="{{client.name}}">
-        </div>
-        <div class="mb-3">
-          <label for="inputLastName" class="form-label">Apellido</label>
-          <input type="text" class="form-control" name="lastname" id="inputLastName" value="{{client.lastname}}">
+          <input type="text" class="form-control" name="name" id="inputName" value="{{supplier.name}}">
         </div>
         <div class="mb-3">
           <label for="inputEmail" class="form-label">Correo</label>
-          <input type="email" class="form-control" name="email" id="inputEmail" value="{{client.email}}">
-        </div>
-        <div class="mb-3">
-          <label for="inputRut" class="form-label">RUT</label>
-          <input type="text" class="form-control" name="rut" id="InputRut" value="{{client.rut}}">
+          <input type="email" class="form-control" name="email" id="inputEmail" value="{{supplier.email}}">
         </div>
         <div class="mb-3">
           <label for="inputPhone" class="form-label">Teléfono</label>
-          <input type="text" class="form-control" name="phone" id="InputPhone" value="{{client.phone}}">
+          <input type="text" class="form-control" name="phone" id="InputPhone" value="{{supplier.phone}}">
         </div>
-        
+        <div class="mb-3">
+          <label for="inputRut" class="form-label">RUT</label>
+          <input type="text" class="form-control" name="rut" id="InputRut" value="{{supplier.rut}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputAddres" class="form-label">Dirección</label>
+          <input type="text" class="form-control" name="address" id="InputAddress" value="{{supplier.address}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputProducts" class="form-label">Tipo de productos</label>
+          <input type="text" class="form-control" name="products" id="InputProducts" value="{{supplier.products}}">
+        </div>
         <div class="text-center pt-4">
-          <a class="btn btn-primary" href="{% url 'clientContacts'%}">Volver</a>
+          <a class="btn btn-primary" href="{% url 'suppliersTable'%}">Volver</a>
           <button type="submit" class="btn btn-primary text-center">Actualizar</button>
         </div>
 
       </form>
 
 </div>
- 
+  
 
 {% endblock content %}

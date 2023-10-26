@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+    <form method="POST">
+        {% csrf_token %}  
+        <div class="mb-3">
+          <label for="inputName" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="inputName" name="name" value="{{user.name}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputLastName" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="inputLastName" name="lastname" value="{{user.lastname}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputEmail" class="form-label">Correo</label>
+          <input type="email" class="form-control" id="inputEmail" name="email" value="{{user.email}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputUsername" class="form-label">Nombre de usuario</label>
+          <input type="text" class="form-control" id="inputUsername" name="username" value="{{user.username}}">
+        </div>
+        <div class="mb-3">
+          <label for="inputPassword" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="exampleInputPassword" name="password" value="{{user.password}}"> 
+        </div>
+        <div>
+          <label for="inputUserType" class="form-label">Tipo de usuario</label name="role">
+          <select class="form-select" aria-label="Default select example" name="role">
+            <option selected>Seleccione un tipo de usuario</option>
+            <option value="{{normalUser}}">Normal</option>
+            <option value="{{admin}}">Administrador</option>
+          </select>
+        </div>
+
+        <div class="text-center pt-4">
+          <a class="btn btn-primary" href="{% url 'usersTable'%}">Volver</a>
+          <button type="submit" class="btn btn-primary text-center">Actualizar</button>
+        </div>
+
+      </form>
+
+</div>
+
+
+{% endblock content %}

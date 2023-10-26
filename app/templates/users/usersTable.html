@@ -14,21 +14,32 @@
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Correo</th>
+                <th>Nombre de usuario</th>
                 <th>Tipo de usuario</th>
                 <th>Acción</th>
             </tr>
         </thead>
         <tbody>
+            {%for user in users%}
             <tr>
-
+                <td>{{user.name}}</td>
+                <td>{{user.lastname}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.role}}</td>
+                <td>
+                    <a class="btn btn-primary" href="{%url 'updateUser' user.id%}">Actualizar</a>
+                    <a class="btn btn-danger" href="{%url 'deleteUser' user.id%}">Eliminar</a>
+                </td>
             </tr>
+            {%endfor%}
         </tbody>
     </table>
 </div>
 
 <div>
     <a class="btn btn-success" href="{% url 'home'%}">Volver</a>
-    <a class="btn btn-primary" href="{% url 'usersForm'%}">Crear usuario</a>
+    <a class="btn btn-primary" href="{% url 'createUser'%}">Crear usuario</a>
 </div>
 
 {% endblock content %}

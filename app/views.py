@@ -13,11 +13,48 @@ def home(request):
     return render(request,'home.html')
 
 def usersTable(request):
-    return render(request,'users/usersTable.html')
+    if request.method == 'GET':
+        users = UserCollaborator.objects.all()
+        
+        return render(request,'users/usersTable.html',{'users':users})
 
-def usersForm(request):
-    return render(request,'users/usersForm.html')
+def createUser(request):
+    admin = Roles.ADMIN
+    normalUser = Roles.NORMAL_USER
+    if request.method == 'GET':       
+        return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser})
+    else:
+        newUser = UserCollaborator.objects.create(
+            name=request.POST['name'],
+            lastname=request.POST['lastname'],
+            email=request.POST['email'],
+            username=request.POST['username'],
+            password=request.POST['password'],
+            role = request.POST['role']
+        )
+        newUser.save()
+        return redirect('usersTable')
 
+def updateUser(request,id):
+    user = UserCollaborator.objects.get(id=id)
+    admin = Roles.ADMIN
+    normalUser = Roles.NORMAL_USER
+    if request.method == 'POST':
+        user.name = request.POST.get('name')
+        user.lastname = request.POST.get('lastname')
+        user.email = request.POST.get('email')
+        user.username = request.POST.get('username')
+        user.password = request.POST.get('password')
+        user.role = request.POST.get('role')
+        user.save()
+        return redirect('usersTable')
+    return render(request,'users/updateUser.html',{'user':user,'admin':admin,'normalUser':normalUser})
+
+def deleteUser(request,id):
+    user = UserCollaborator.objects.get(id=id)
+    user.delete()
+    return redirect('usersTable')
+    
 def productsTable(request):
     return render(request,'products/productsTable.html')
 
@@ -98,18 +135,19 @@ def createSuppliers(request):
         newSupplier.save()
         return redirect('suppliersTable')
     
-def updateClientContacts(request,id):
-    client = ClientContacts.objects.get(id=id)
+def updateSuppliers(request,id):
+    supplier = Suppliers.objects.get(id=id) 
     if request.method == 'POST':
-        client.name = request.POST.get('name')
-        client.lastname = request.POST.get('lastname')
-        client.email = request.POST.get('email')
-        client.rut = request.POST.get('rut')
-        client.phone = request.POST.get('phone')
-        client.save()
-        return redirect('clientContacts')
+        supplier.name = request.POST.get('name')
+        supplier.email = request.POST.get('email')
+        supplier.phone = request.POST.get('phone')
+        supplier.rut = request.POST.get('rut')
+        supplier.address = request.POST.get('address')
+        supplier.products = request.POST.get('products')
+        supplier.save()
+        return redirect('suppliersTable')
     
-    return render(request,'clientContacts/clientUpdate.html',{'client':client})
+    return render(request,'suppliers/suppliersUpdate.html',{'supplier':supplier})
    
     
 def deleteSuppliers(request,id):
