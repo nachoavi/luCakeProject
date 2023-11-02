@@ -1,9 +1,19 @@
 from django.db import models
 
 # Create your models here.
+
+class CategoryProduct(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+
 class ProductsInventory(models.Model):
     name = models.CharField(max_length=100,null=False)
-    price = models.DecimalField(max_digits=10,decimal_places=3,null=False)
+    price = models.PositiveIntegerField(null=False)
+    category = models.ForeignKey(CategoryProduct, on_delete=models.PROTECT)
+    elabDate = models.DateField()
+    expDate = models.DateField()
     stock = models.PositiveIntegerField(null=False)
     
     def __str__(self):
@@ -15,7 +25,7 @@ class ClientContacts(models.Model):
     lastname = models.CharField(max_length=50,null=False)
     email = models.EmailField(max_length=100,null=False)
     rut = models.CharField(max_length=13,null=False)
-    phone = models.CharField(max_length=15,null='N/A')
+    phone = models.CharField(max_length=15)
     
     def __str__(self):
         return self.name + " " + self.lastname
@@ -42,13 +52,13 @@ class UserCollaborator(models.Model):
 
     
 class Sales(models.Model):
-    product = models.ForeignKey(ProductsInventory, on_delete=models.PROTECT,null='N/A')
+    product = models.ForeignKey(ProductsInventory, on_delete=models.PROTECT)
     amount = models.PositiveIntegerField(null=False)
     saleDate = models.DateTimeField(auto_now_add=True)
     subtotal = models.PositiveIntegerField(null=False)
     iva = models.PositiveBigIntegerField(null=False)
     total = models.PositiveIntegerField(null=False)
-    seller = models.ForeignKey(UserCollaborator,on_delete=models.PROTECT,null='N/A')
+    seller = models.ForeignKey(UserCollaborator,on_delete=models.PROTECT)
     
     
 class Ingredients(models.Model):

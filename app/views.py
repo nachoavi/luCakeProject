@@ -56,10 +56,48 @@ def deleteUser(request,id):
     return redirect('usersTable')
     
 def productsTable(request):
-    return render(request,'products/productsTable.html')
+    if request.method == 'GET':
+        products = ProductsInventory.objects.all()
+        return render(request,'products/productsTable.html',{'products':products})
 
-def productsForm(request):
-    return render(request,'products/productsForm.html')
+def createProducts(request):
+    if request.method == 'GET': 
+        categorys = CategoryProduct.objects.all()      
+        return render(request,'products/createProducts.html',{'categorys':categorys})
+    else:
+        categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
+        newProduct = ProductsInventory.objects.create(
+            name=request.POST['name'],
+            price=request.POST['price'],
+            category=categoryID,
+            elabDate=request.POST['elabDate'],
+            expDate=request.POST['expDate'],
+            stock = request.POST['stock']
+        )
+        newProduct.save()
+        return redirect('productsTable')
+
+def updateProduct(request,id):
+    product = ProductsInventory.objects.get(id=id)
+    categorys = CategoryProduct.objects.all()  
+    if request.method == 'POST':
+        categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
+        product.name = request.POST.get('name')
+        product.price = request.POST.get('price')
+        product.category = categoryID
+        product.elabDate = request.POST.get('elabDate')
+        product.expDate = request.POST.get('expDate')
+        product.stock = request.POST.get('stock')
+        product.save()
+        return redirect('productsTable')
+    return render(request,'products/updateProducts.html',{'product':product,'categorys':categorys})
+
+def deleteProducts(request,id):
+    product = get_object_or_404(ProductsInventory, id=id)
+    product.delete()
+    return redirect('productsTable')
+
+
 
 def salesTable(request):
     return render(request,'sales/salesTable.html')

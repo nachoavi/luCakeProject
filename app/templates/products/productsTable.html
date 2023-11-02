@@ -11,23 +11,37 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Codigo/ID</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Cantidad</th>
+                <th>Categoria</th>
+                <th>Fecha de elaboración</th>
+                <th>Fecha de caducidad</th>
+                <th>Stock</th>
+                <th>Acción</th>
             </tr>
         </thead>
         <tbody>
+            {%for product in products%}
             <tr>
-
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.elabDate}}</td>
+                <td>{{product.expDate}}</td>
+                <td>{{product.stock}}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'updateProducts' product.id %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url 'deleteProducts' product.id %}">Eliminar</a>
+                </td>
             </tr>
+            {%endfor%}
         </tbody>
     </table>
 </div>
 
 <div>
     <a class="btn btn-success" href="{% url 'home'%}">Volver</a>
-    <a class="btn btn-primary" href="{% url 'productsForm'%}">Ingresar producto</a>
+    <a class="btn btn-primary" href="{% url 'createProducts'%}">Ingresar producto</a>
 </div>
 
 {% endblock content %}
