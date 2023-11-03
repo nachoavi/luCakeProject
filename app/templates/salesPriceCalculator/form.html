@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+    <h1>Calcular mi precio de venta</h1>
+</div>
+
+<div>
+    <form id="precioVentaForm" method="POST">
+        <label class="form-label" for="materiaPrima">Costo de Materia Prima</label>
+        <input class="form-control" type="number" id="rawMaterial" name="rawMaterial" step="1" required>
+
+        <label class="form-label" for="manoDeObra">Costo de Mano de Obra:</label>
+        <input class="form-control" type="number" id="labour" name="labour" step="1" required>
+
+        <label class="form-label" for="costosIndirectos">Costos Indirectos:</label>
+        <input class="form-control" type="number" id="costosIndirectos" name="indirectCosts" step="1" required>
+
+        <label class="form-label" for="gastosOperativos">Gastos Operativos:</label>
+        <input class="form-control" type="number" id="gastosOperativos" name="indirectExpenses" step="1" required>
+
+        <div>
+            <button type="submit" class="btn btn-primary text-center mt-4">Calcular</button>
+        </div>
+    </form>
+
+</div>
+
+
+{% endblock content %}

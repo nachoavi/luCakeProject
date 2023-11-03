@@ -192,3 +192,10 @@ def deleteSuppliers(request,id):
     supplier = Suppliers.objects.get(id=id)
     supplier.delete()
     return redirect("suppliersTable")
+
+
+def costOfSales(request):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request,'salesPriceCalculator/form.html')
