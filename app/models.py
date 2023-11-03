@@ -40,7 +40,7 @@ class UserCollaborator(models.Model):
     lastname = models.CharField(max_length=50,null=False)
     email = models.EmailField(max_length=100,null=False)
     username = models.CharField(max_length=50,null=False)
-    password = models.CharField(max_length=150,null=False)
+    password = models.BinaryField(max_length=150,null=False)
     role = models.CharField(
         max_length=20,
         choices=Roles.choices,

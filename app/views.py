@@ -1,16 +1,46 @@
 from django.shortcuts import render,get_object_or_404,redirect
+from app.models import UserCollaborator 
 from .models import *
+import bcrypt
 
 # Create your views here.
 
 def signin(request):
-    return render(request,'signin.html')
+    if request.session["isAuthenticated"]:
+        return redirect("/")
+    else:
+        if request.method == "GET":
+            return render(request,'signin.html')
+        else:
+            user_email = request.POST["user-email"]
+            password = request.POST["password"]
+            get_user = UserCollaborator.objects.get(email=user_email)
+            password_bytes = password.encode("utf-8")
+
+            result = bcrypt.checkpw(password_bytes, get_user.password)
+            if result:
+                request.session["isAuthenticated"] = True
+                return redirect("/")
+            
+            else:
+                return redirect("/signin")
+        
+
+def logout(request):
+    request.session["isAuthenticated"] = False
+    return redirect("/signin")
+
 
 def baseHTML(request):
     return render(request,'base.html')
 
 def home(request):
-    return render(request,'home.html')
+    if request.session["isAuthenticated"]:
+        return render(request,'home.html')
+    else:
+        return redirect("/signin")
+
+    
 
 def usersTable(request):
     if request.method == 'GET':
@@ -24,12 +54,16 @@ def createUser(request):
     if request.method == 'GET':       
         return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser})
     else:
+        password = str(request.POST['password'])
+        bytes = password.encode("utf-8")
+        salt = bcrypt.gensalt()
+        hash = bcrypt.hashpw(bytes, salt)
         newUser = UserCollaborator.objects.create(
             name=request.POST['name'],
             lastname=request.POST['lastname'],
             email=request.POST['email'],
             username=request.POST['username'],
-            password=request.POST['password'],
+            password=hash,
             role = request.POST['role']
         )
         newUser.save()
