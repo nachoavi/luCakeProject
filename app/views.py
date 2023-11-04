@@ -1,5 +1,4 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from app.models import UserCollaborator 
 from .models import *
 import bcrypt
 
@@ -26,6 +25,7 @@ def signin(request):
             result = bcrypt.checkpw(password_bytes, get_user.password)
             if result:
                 request.session["isAuthenticated"] = True
+                request.session["username"] = get_user.username
                 return redirect("/")
             
             else:
@@ -38,7 +38,7 @@ def logout(request):
 
 
 def baseHTML(request):
-    return render(request,'base.html')
+    return render(request,'base.html', {"username": request.session["username"]})
 
 def home(request):
     user_auth = request.session.get("isAuthenticated")
@@ -87,8 +87,12 @@ def updateUser(request,id):
         user.lastname = request.POST.get('lastname')
         user.email = request.POST.get('email')
         user.username = request.POST.get('username')
-        user.password = request.POST.get('password')
+        password = request.POST.get('password')
         user.role = request.POST.get('role')
+        bytes = password.encode("utf-8")
+        salt = bcrypt.gensalt()
+        hash = bcrypt.hashpw(bytes, salt)
+        user.password = hash
         user.save()
         return redirect('usersTable')
     return render(request,'users/updateUser.html',{'user':user,'admin':admin,'normalUser':normalUser})
@@ -189,10 +193,19 @@ def deleteClientContacts(request,id):
     return redirect("clientContacts")
 
 def recipes(request):
-    return render(request,'recipes/recipes.html')
+    recipes_data = Recipes.objects.all()
+    return render(request,'recipes/recipes.html', {"recipes": recipes_data})
 
 def recipesForm(request):
-    return render(request,'recipes/recipesForm.html')
+    if request.method == "GET":
+        return render(request,'recipes/recipesForm.html')
+    else:
+        recipe_name = request.POST["recipe_name"]
+        recipe_ingredients = request.POST["recipe_ingredients"]
+        recipe_preparation = request.POST["recipe_preparation"]
+        new_recipe = Recipes(title=recipe_name, ingredients=recipe_ingredients, directions=recipe_preparation)
+        new_recipe.save()
+        return redirect("/recipes")
 
 
 def suppliersTable(request):

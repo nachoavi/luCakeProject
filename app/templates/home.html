@@ -1,13 +1,16 @@
 {%extends 'base.html'%}
 
+
+{% block username %}{{username}}{% endblock username %}
+
 {% block content %}
 {% load static %}
 
 <div>
-    <h1>HOLA MUNDO</h1>
+    <h1>Te damos la bienvenida {{username}}</h1>
 </div>
 <div>
-    <img src="#" alt="CORPORATIVE IMAGE">
+    <img src="{% static "img/corporative.jpg" %}" alt="CORPORATIVE IMAGE" width="100%" height="100%">
 </div>
 
 {% endblock content %}
