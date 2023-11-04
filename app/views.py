@@ -6,6 +6,12 @@ import bcrypt
 # Create your views here.
 
 def signin(request):
+    user_auth = request.session.get("isAuthenticated")
+
+    if user_auth is None:
+        request.session["isAuthenticated"] = False
+
+
     if request.session["isAuthenticated"]:
         return redirect("/")
     else:
@@ -35,10 +41,13 @@ def baseHTML(request):
     return render(request,'base.html')
 
 def home(request):
-    if request.session["isAuthenticated"]:
-        return render(request,'home.html')
-    else:
+    user_auth = request.session.get("isAuthenticated")
+    print(user_auth)
+    if user_auth is False:
         return redirect("/signin")
+        
+    else:
+        return render(request,'home.html')
 
     
 
