@@ -53,206 +53,302 @@ def home(request):
     
 
 def usersTable(request):
-    if request.method == 'GET':
-        users = UserCollaborator.objects.all()
-        
-        return render(request,'users/usersTable.html',{'users':users})
+    role = request.session.get("role")
+    if role == "Admin":
+        if request.method == 'GET':
+            users = UserCollaborator.objects.all()
+            
+            return render(request,'users/usersTable.html',{'users':users})
+    else:
+        return redirect("/")
+
+    
 
 def createUser(request):
     admin = Roles.ADMIN
     normalUser = Roles.NORMAL_USER
-    if request.method == 'GET':       
-        return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser})
+    role = request.session.get("role")
+    if role == "Admin": 
+        if request.method == 'GET':       
+            return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser})
+        else:
+            password = str(request.POST['password'])
+            bytes = password.encode("utf-8")
+            salt = bcrypt.gensalt()
+            hash = bcrypt.hashpw(bytes, salt)
+            newUser = UserCollaborator.objects.create(
+                name=request.POST['name'],
+                lastname=request.POST['lastname'],
+                email=request.POST['email'],
+                username=request.POST['username'],
+                password=hash,
+                role = request.POST['role']
+            )
+            newUser.save()
+            return redirect('usersTable')
     else:
-        password = str(request.POST['password'])
-        bytes = password.encode("utf-8")
-        salt = bcrypt.gensalt()
-        hash = bcrypt.hashpw(bytes, salt)
-        newUser = UserCollaborator.objects.create(
-            name=request.POST['name'],
-            lastname=request.POST['lastname'],
-            email=request.POST['email'],
-            username=request.POST['username'],
-            password=hash,
-            role = request.POST['role']
-        )
-        newUser.save()
-        return redirect('usersTable')
+        return redirect("/")
 
 def updateUser(request,id):
     user = UserCollaborator.objects.get(id=id)
     admin = Roles.ADMIN
     normalUser = Roles.NORMAL_USER
-    if request.method == 'POST':
-        user.name = request.POST.get('name')
-        user.lastname = request.POST.get('lastname')
-        user.email = request.POST.get('email')
-        user.username = request.POST.get('username')
-        password = request.POST.get('password')
-        user.role = request.POST.get('role')
-        bytes = password.encode("utf-8")
-        salt = bcrypt.gensalt()
-        hash = bcrypt.hashpw(bytes, salt)
-        user.password = hash
-        user.save()
-        return redirect('usersTable')
-    return render(request,'users/updateUser.html',{'user':user,'admin':admin,'normalUser':normalUser})
+    role = request.session.get("role")
+    if role == "Admin":
+        if request.method == 'POST':
+            user.name = request.POST.get('name')
+            user.lastname = request.POST.get('lastname')
+            user.email = request.POST.get('email')
+            user.username = request.POST.get('username')
+            password = request.POST.get('password')
+            user.role = request.POST.get('role')
+            bytes = password.encode("utf-8")
+            salt = bcrypt.gensalt()
+            hash = bcrypt.hashpw(bytes, salt)
+            user.password = hash
+            user.save()
+            return redirect('usersTable')
+        return render(request,'users/updateUser.html',{'user':user,'admin':admin,'normalUser':normalUser})
+    else:
+        return redirect("/")
 
 def deleteUser(request,id):
+    role = request.session.get("role")
     user = UserCollaborator.objects.get(id=id)
-    user.delete()
-    return redirect('usersTable')
+    if role == "Admin":
+        user.delete()
+        return redirect('usersTable')
+    else:
+        return redirect("/")
     
 def productsTable(request):
-    if request.method == 'GET':
-        products = ProductsInventory.objects.all()
-        return render(request,'products/productsTable.html',{'products':products})
+    role = request.session.get("role")
+    if role == "Admin":
+        if request.method == 'GET':
+            products = ProductsInventory.objects.all()
+            return render(request,'products/productsTable.html',{'products':products})
+    else:
+        return redirect("/")
 
 def createProducts(request):
-    if request.method == 'GET': 
-        categorys = CategoryProduct.objects.all()      
-        return render(request,'products/createProducts.html',{'categorys':categorys})
+    role = request.session.get("role")
+    if role == "Admin":
+        if request.method == 'GET': 
+            categorys = CategoryProduct.objects.all()      
+            return render(request,'products/createProducts.html',{'categorys':categorys})
+        else:
+            categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
+            newProduct = ProductsInventory.objects.create(
+                name=request.POST['name'],
+                price=request.POST['price'],
+                category=categoryID,
+                elabDate=request.POST['elabDate'],
+                expDate=request.POST['expDate'],
+                stock = request.POST['stock']
+            )
+            newProduct.save()
+            return redirect('productsTable')
     else:
-        categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
-        newProduct = ProductsInventory.objects.create(
-            name=request.POST['name'],
-            price=request.POST['price'],
-            category=categoryID,
-            elabDate=request.POST['elabDate'],
-            expDate=request.POST['expDate'],
-            stock = request.POST['stock']
-        )
-        newProduct.save()
-        return redirect('productsTable')
+        return redirect("/")
 
 def updateProduct(request,id):
-    product = ProductsInventory.objects.get(id=id)
-    categorys = CategoryProduct.objects.all()  
-    if request.method == 'POST':
-        categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
-        product.name = request.POST.get('name')
-        product.price = request.POST.get('price')
-        product.category = categoryID
-        product.elabDate = request.POST.get('elabDate')
-        product.expDate = request.POST.get('expDate')
-        product.stock = request.POST.get('stock')
-        product.save()
-        return redirect('productsTable')
-    return render(request,'products/updateProducts.html',{'product':product,'categorys':categorys})
+    role = request.session.get("role")
+    if role == "Admin":
+        product = ProductsInventory.objects.get(id=id)
+        categorys = CategoryProduct.objects.all()  
+        if request.method == 'POST':
+            categoryID = CategoryProduct.objects.get(id=request.POST.get('category'))
+            product.name = request.POST.get('name')
+            product.price = request.POST.get('price')
+            product.category = categoryID
+            product.elabDate = request.POST.get('elabDate')
+            product.expDate = request.POST.get('expDate')
+            product.stock = request.POST.get('stock')
+            product.save()
+            return redirect('productsTable')
+        return render(request,'products/updateProducts.html',{'product':product,'categorys':categorys})
+    else:
+        return redirect("/")
 
 def deleteProducts(request,id):
     product = get_object_or_404(ProductsInventory, id=id)
-    product.delete()
-    return redirect('productsTable')
-
+    role = request.session.get("role")
+    
+    if role == "Admin":
+        product.delete()
+        return redirect('productsTable')
+    
+    else:
+        return redirect("/")
 
 
 def salesTable(request):
-    return render(request,'sales/salesTable.html')
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        return render(request,'sales/salesTable.html')
+    else:
+        return redirect("/")
 
 def sell(request):
-    return render(request,'sales/sell.html')
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        return render(request,'sales/sell.html')
+    else:
+        return redirect("/")
 
 def clientContacts(request):
-    if request.method == 'GET':
-        clientsList = ClientContacts.objects.all()
-        return render(request,'clientContacts/clientContactsTable.html',{
-            'clients':clientsList
-        })
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        if request.method == 'GET':
+            clientsList = ClientContacts.objects.all()
+            return render(request,'clientContacts/clientContactsTable.html',{
+                'clients':clientsList
+            })
+    else:
+        return redirect("/")
 
 def createClientContacts(request):
-    if request.method == 'GET':
-        return render(request,'clientContacts/createClientContacts.html')
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        if request.method == 'GET':
+            return render(request,'clientContacts/createClientContacts.html')
+        else:
+            newClient = ClientContacts.objects.create(
+                name=request.POST['name'],
+                lastname=request.POST['lastname'],
+                email=request.POST['email'],
+                rut=request.POST['rut'],
+                phone=request.POST['phone']
+            )
+            newClient.save()
+            return redirect('clientContacts')
     else:
-        newClient = ClientContacts.objects.create(
-            name=request.POST['name'],
-            lastname=request.POST['lastname'],
-            email=request.POST['email'],
-            rut=request.POST['rut'],
-            phone=request.POST['phone']
-        )
-        newClient.save()
-        return redirect('clientContacts')
+        return redirect("/")
     
 def updateClientContacts(request,id):
-    client = ClientContacts.objects.get(id=id)
-    if request.method == 'POST':
-        client.name = request.POST.get('name')
-        client.lastname = request.POST.get('lastname')
-        client.email = request.POST.get('email')
-        client.rut = request.POST.get('rut')
-        client.phone = request.POST.get('phone')
-        client.save()
-        return redirect('clientContacts')
+    role = request.session.get("role")
     
-    return render(request,'clientContacts/clientUpdate.html',{'client':client})
-   
+    if role == "Admin" or role == "NormalUser":
+        client = ClientContacts.objects.get(id=id)
+        if request.method == 'POST':
+            client.name = request.POST.get('name')
+            client.lastname = request.POST.get('lastname')
+            client.email = request.POST.get('email')
+            client.rut = request.POST.get('rut')
+            client.phone = request.POST.get('phone')
+            client.save()
+            return redirect('clientContacts')
+
+        return render(request,'clientContacts/clientUpdate.html',{'client':client})
+    else:
+        return redirect("/")
     
 def deleteClientContacts(request,id):
-    client = ClientContacts.objects.get(id=id)
-    client.delete()
-    return redirect("clientContacts")
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        client = ClientContacts.objects.get(id=id)
+        client.delete()
+        return redirect("clientContacts")
+    else:
+        return redirect("/")
 
 def recipes(request):
-    recipes_data = Recipes.objects.all()
-    return render(request,'recipes/recipes.html', {"recipes": recipes_data})
-
-def recipesForm(request):
-    if request.method == "GET":
-        return render(request,'recipes/recipesForm.html')
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        recipes_data = Recipes.objects.all()
+        return render(request,'recipes/recipes.html', {"recipes": recipes_data})
     else:
-        recipe_name = request.POST["recipe_name"]
-        recipe_ingredients = request.POST["recipe_ingredients"]
-        recipe_preparation = request.POST["recipe_preparation"]
-        new_recipe = Recipes(title=recipe_name, ingredients=recipe_ingredients, directions=recipe_preparation)
-        new_recipe.save()
-        return redirect("/recipes")
-
+        return redirect("/")
+    
+def recipesForm(request):
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        if request.method == "GET":
+            return render(request,'recipes/recipesForm.html')
+        else:
+            recipe_name = request.POST["recipe_name"]
+            recipe_ingredients = request.POST["recipe_ingredients"]
+            recipe_preparation = request.POST["recipe_preparation"]
+            new_recipe = Recipes(title=recipe_name, ingredients=recipe_ingredients, directions=recipe_preparation)
+            new_recipe.save()
+            return redirect("/recipes")
+    else:
+        return redirect("/")
 
 def suppliersTable(request):
-    if request.method == 'GET':
-        suppliersList = Suppliers.objects.all()
-        return render(request,'suppliers/suppliersTable.html',{
-            'suppliers':suppliersList
-        })
+    role = request.session.get("role")
+    
+    if role == "Admin":
+        if request.method == 'GET':
+            suppliersList = Suppliers.objects.all()
+            return render(request,'suppliers/suppliersTable.html',{
+                'suppliers':suppliersList
+            })
+    else:
+        return redirect("/")
 
 def createSuppliers(request):
-    if request.method == 'GET':
-        return render(request,'suppliers/createSuppliers.html')
+    role = request.session.get("role")
+    
+    if role == "Admin":
+        if request.method == 'GET':
+            return render(request,'suppliers/createSuppliers.html')
+        else:
+            newSupplier = Suppliers.objects.create(
+                name=request.POST['name'],
+                email=request.POST['email'],
+                phone=request.POST['phone'],
+                rut=request.POST['rut'],
+                address=request.POST['address'],
+                products=request.POST['products'])
+            newSupplier.save()
+            return redirect('suppliersTable')
     else:
-        newSupplier = Suppliers.objects.create(
-            name=request.POST['name'],
-            email=request.POST['email'],
-            phone=request.POST['phone'],
-            rut=request.POST['rut'],
-            address=request.POST['address'],
-            products=request.POST['products'])
-        newSupplier.save()
-        return redirect('suppliersTable')
+        return redirect("/")
     
 def updateSuppliers(request,id):
-    supplier = Suppliers.objects.get(id=id) 
-    if request.method == 'POST':
-        supplier.name = request.POST.get('name')
-        supplier.email = request.POST.get('email')
-        supplier.phone = request.POST.get('phone')
-        supplier.rut = request.POST.get('rut')
-        supplier.address = request.POST.get('address')
-        supplier.products = request.POST.get('products')
-        supplier.save()
-        return redirect('suppliersTable')
+    role = request.session.get("role")
     
-    return render(request,'suppliers/suppliersUpdate.html',{'supplier':supplier})
+    if role == "Admin":
+        supplier = Suppliers.objects.get(id=id) 
+        if request.method == 'POST':
+            supplier.name = request.POST.get('name')
+            supplier.email = request.POST.get('email')
+            supplier.phone = request.POST.get('phone')
+            supplier.rut = request.POST.get('rut')
+            supplier.address = request.POST.get('address')
+            supplier.products = request.POST.get('products')
+            supplier.save()
+            return redirect('suppliersTable')
+
+        return render(request,'suppliers/suppliersUpdate.html',{'supplier':supplier})
+    else:
+        return redirect("/")
    
     
 def deleteSuppliers(request,id):
-    supplier = Suppliers.objects.get(id=id)
-    supplier.delete()
-    return redirect("suppliersTable")
-
+    role = request.session.get("role")
+    
+    if role == "Admin":
+        supplier = Suppliers.objects.get(id=id)
+        supplier.delete()
+        return redirect("suppliersTable")
+    else:
+        return redirect("/")
 
 def costOfSales(request):
-    if request.method == 'POST':
-        pass
+    role = request.session.get("role")
+    if role == "Admin":
+        if request.method == 'GET':
+            return render(request,'salesPriceCalculator/form.html')
+        else:
+            pass
     else:
-        return render(request,'salesPriceCalculator/form.html')
+        return redirect("/")
