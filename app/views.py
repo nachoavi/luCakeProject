@@ -26,10 +26,12 @@ def signin(request):
             if result:
                 request.session["isAuthenticated"] = True
                 request.session["username"] = get_user.username
+                request.session["id_user"] = get_user.id
+                request.session["role"] = get_user.role
                 return redirect("/")
             
             else:
-                return redirect("/signin")
+                return render(request,'signin.html', {"error": "error"})
         
 
 def logout(request):
@@ -42,7 +44,6 @@ def baseHTML(request):
 
 def home(request):
     user_auth = request.session.get("isAuthenticated")
-    print(user_auth)
     if user_auth is False:
         return redirect("/signin")
         

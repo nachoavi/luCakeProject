@@ -13,6 +13,15 @@
     <div class="container-flex login-form">
         <form method="POST">
             {% csrf_token %}
+            {% if error %}
+
+              <div class="alert alert-danger">
+                <p class="fw-bold">¡ERROR!</p>
+                Contraseña o correo incorrecto.
+
+              </div>
+            
+            {% endif %}
             <div class="mb-3">
               <label for="user-email" class="form-label">Usuario o correo</label>
               <input name="user-email" class="form-control" id="user-email" aria-describedby="emailHelp">

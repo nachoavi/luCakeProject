@@ -23,14 +23,19 @@
         <aside id="vertical-menu" class="shadow bg-body-tertiary rounded">
             <h1 class="fw-bold">Las <span class="special-text">Unionas</span></h1>
             <nav class="mt-5 d-flex flex-column h-100">
-                <ul class="d-flex flex-column gap-5 align-items-start justify-content-center">
-                    <li><i class="fa-solid fa-user-plus fa-sm"></i><a href="{%url 'usersTable'%}">Usuarios</a></li>
-                    <li><i class="fa-solid fa-cake-candles fa-sm"></i><a href="{%url 'productsTable'%}">Productos</a></li>
-                    <li><i class="fa-solid fa-shop fa-sm"></i><a href="{%url 'salesTable'%}">Ventas</a></li>
-                    <li><i class="fa-solid fa-cookie fa-lg"></i><a href="{%url 'recipes'%}">Recetas</a></li>
-                    <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'clientContacts'%}">Clientes</a></li>
-                    <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'suppliersTable'%}">Proovedores</a></li>
-                    <li><i class="fa-solid fa-calculator"></i><a href="{%url 'costOfSales'%}">Costo de venta</a></li>
+                <ul class="d-flex flex-column gap-5 align-items-start justify-content-start">
+                    {% if role == "NormalUser" %}
+                        <li><i class="fa-solid fa-cake-candles fa-sm"></i><a href="{%url 'productsTable'%}">Productos</a></li>
+                        <li><i class="fa-solid fa-cookie fa-lg"></i><a href="{%url 'recipes'%}">Recetas</a></li>
+                    {% elif role == "Admin" %}
+                        <li><i class="fa-solid fa-user-plus fa-sm"></i><a href="{%url 'usersTable'%}">Usuarios</a></li>
+                        <li><i class="fa-solid fa-shop fa-sm"></i><a href="{%url 'salesTable'%}">Ventas</a></li>
+                        <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'clientContacts'%}">Clientes</a></li>
+                        <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'suppliersTable'%}">Proovedores</a></li>
+                        <li><i class="fa-solid fa-calculator"></i><a href="{%url 'costOfSales'%}">Costo de venta</a></li>
+                    {% else %}
+                        <li>¿Hola?</li>
+                    {% endif %}
                 </ul>
 
                     <ul class="d-flex flex-column justify-content-center">
