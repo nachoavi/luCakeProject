@@ -5,23 +5,26 @@
 <div class="mb-3">
     <h1>Recetas</h1>
 </div>
-<div>
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Nombre de la receta</h5>
-          <p class="card-text">Breve descripción</p>
-          <a href="#" class="btn btn-primary">Ver receta</a>
+<div class="d-flex gap-4 flex-wrap justify-content-center">
+    {% if recipes %}
+        {% for data in recipes %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{data.url_img}}" class="card-img-top" width="100%" height="200vh">
+            <div class="card-body">
+              <h5 class="card-title">{{data.title}}</h5>
+              <p class="card-text">{{data.description}}</p>
+              <a href="{% url "see_recipe" data.id %}" class="btn btn-primary">Ver receta</a>
+            </div>
         </div>
+        {% endfor %}
+
+    {% else %}
+
+    <div class="alert alert-warning">
+        No existen recetas registradas.
     </div>
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Nombre de la receta</h5>
-          <p class="card-text">Breve descripción</p>
-          <a href="#" class="btn btn-primary">Ver receta</a>
-        </div>
-    </div>
+    
+    {% endif %}
 </div>
 
 <div class="mt-3">

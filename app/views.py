@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
 from .models import *
 import bcrypt
-import math
+import json
 
 # Create your views here.
 
@@ -21,6 +21,8 @@ def signin(request):
         else:
             user_email = request.POST["user-email"]
             password = request.POST["password"]
+            if user_email == "" or password == "":
+                return render(request,'signin.html', {"void_credentials": "void_credentials"})
             get_user = UserCollaborator.objects.get(email=user_email)
             password_bytes = password.encode("utf-8")
 
@@ -57,6 +59,7 @@ def home(request):
             if data.stock < 3:
                 low_stock = data.name
         request.session["low_stock"] = low_stock
+
 
         return render(request,'home.html')
 
@@ -133,7 +136,7 @@ def deleteUser(request,id):
     
 def productsTable(request):
     role = request.session.get("role")
-    if role == "Admin":
+    if role == "Admin" or role == "NormalUser":
         if request.method == 'GET':
             products = ProductsInventory.objects.all()
             return render(request,'products/productsTable.html',{'products':products})
@@ -142,7 +145,7 @@ def productsTable(request):
 
 def createProducts(request):
     role = request.session.get("role")
-    if role == "Admin":
+    if role == "Admin" or role == "NormalUser":
         if request.method == 'GET': 
             categorys = CategoryProduct.objects.all()      
             return render(request,'products/createProducts.html',{'categorys':categorys})
@@ -163,7 +166,7 @@ def createProducts(request):
 
 def updateProduct(request,id):
     role = request.session.get("role")
-    if role == "Admin":
+    if role == "Admin" or role == "NormalUser":
         product = ProductsInventory.objects.get(id=id)
         categorys = CategoryProduct.objects.all()  
         if request.method == 'POST':
@@ -184,7 +187,7 @@ def deleteProducts(request,id):
     product = get_object_or_404(ProductsInventory, id=id)
     role = request.session.get("role")
     
-    if role == "Admin":
+    if role == "Admin" or role == "NormalUser":
         product.delete()
         return redirect('productsTable')
     
@@ -294,6 +297,27 @@ def recipes(request):
     else:
         return redirect("/")
     
+def recipes_see(request, id_recipe):
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        recipe_data = Recipes.objects.get(id=id_recipe)
+        ingredients_data = recipe_data.ingredients.split(", ")
+        print(ingredients_data)
+        return render(request, "recipes/recipeContent.html", {"recipe": recipe_data, "ingredients": ingredients_data})
+    else:
+        return redirect("/")
+    
+def recipes_delete(request, id_recipe):
+    role = request.session.get("role")
+    
+    if role == "Admin" or role == "NormalUser":
+        recipe = Recipes.objects.get(id=id_recipe)
+        recipe.delete()
+        return redirect("/recipes")
+    else:
+        return redirect("/")
+    
 def recipesForm(request):
     role = request.session.get("role")
     
@@ -304,7 +328,9 @@ def recipesForm(request):
             recipe_name = request.POST["recipe_name"]
             recipe_ingredients = request.POST["recipe_ingredients"]
             recipe_preparation = request.POST["recipe_preparation"]
-            new_recipe = Recipes(title=recipe_name, ingredients=recipe_ingredients, directions=recipe_preparation)
+            recipe_description = request.POST["recipe_description"]
+            recipe_image = request.POST["url_img"]
+            new_recipe = Recipes(title=recipe_name, description=recipe_description, url_img=recipe_image, ingredients=recipe_ingredients, directions=recipe_preparation)
             new_recipe.save()
             return redirect("/recipes")
     else:

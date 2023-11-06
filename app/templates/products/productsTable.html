@@ -28,7 +28,7 @@
                 <td>{{product.category}}</td>
                 <td>{{product.elabDate}}</td>
                 <td>{{product.expDate}}</td>
-                <td>{{product.stock}}</td>
+                {% if product.stock < 5 %}<td class="text-danger fw-bold">{{product.stock}}</td> {% else %} <td class="text-success fw-bold">{{product.stock}}</td> {% endif %}
                 <td>
                     <a class="btn btn-primary" href="{% url 'updateProducts' product.id %}">Editar</a>
                     <a class="btn btn-danger" href="{% url 'deleteProducts' product.id %}">Eliminar</a>

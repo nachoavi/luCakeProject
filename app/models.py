@@ -61,15 +61,12 @@ class Sales(models.Model):
     seller = models.ForeignKey(UserCollaborator,on_delete=models.PROTECT)
     
     
-class Ingredients(models.Model):
-    name = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return self.nombre
          
 class Recipes(models.Model):
     title = models.CharField(max_length=50,null=False)
-    ingredients = models.ManyToManyField(Ingredients)
+    description = models.CharField(max_length=100, null=True)
+    url_img = models.CharField(max_length=255, null=True)
+    ingredients = models.CharField(max_length=200, null=False)
     directions = models.TextField(null=False)
     
     def __str__(self):

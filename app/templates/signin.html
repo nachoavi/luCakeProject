@@ -10,7 +10,8 @@
     <title>Iniciar sesión</title>
 </head>
 <body style="background-color: #EEEE" class="d-flex justify-content-center align-items-center">
-    <div class="container-flex login-form">
+    <div class="container-flex login-form d-flex flex-column">
+        <h1 class="mb-5">Las Unioninas</h1>
         <form method="POST">
             {% csrf_token %}
             {% if error %}
@@ -20,7 +21,12 @@
                 Contraseña o correo incorrecto.
 
               </div>
-            
+              {% elif void_credentials %}
+                <div class="alert alert-warning">
+                  <p class="fw-bold">¡Advertencia!</p>
+                  Completa los campos.
+
+                </div>
             {% endif %}
             <div class="mb-3">
               <label for="user-email" class="form-label">Correo</label>

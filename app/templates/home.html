@@ -13,16 +13,16 @@
     <img src="{% static "img/corporative.jpg" %}" alt="CORPORATIVE IMAGE" width="100%" height="100%">
 </div>
 
-<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
+<div class="toast-container position-fixed bottom-0 end-0 p-3 ">
   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
+    <div class="toast-header bg-warning-subtle">
       <strong class="me-auto">⚠️ ¡Advertencia!</strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
     <div class="toast-body">
-      El producto {{low_stock}} tiene poco stock, ¡revisalo!
+      El producto "{{low_stock}}" tiene poco stock, ¡revisalo!
+      <a href="{% url "productsTable" %}">Ir a productos...</a>
     </div>
   </div>
 </div>

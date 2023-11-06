@@ -28,6 +28,7 @@
                         <li><i class="fa-solid fa-house"></i><a href="{% url "home" %}">Inicio</a></li>
                         <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'clientContacts'%}">Clientes</a></li>
                         <li><i class="fa-solid fa-shop fa-sm"></i><a href="{%url 'salesTable'%}">Ventas</a></li>
+                        <li><i class="fa-solid fa-boxes-stacked"></i><a href="{%url 'productsTable'%}">Productos</a></li>
                         <li><i class="fa-solid fa-cookie fa-lg"></i><a href="{%url 'recipes'%}">Recetas</a></li>
                     {% elif role == "Admin" %}
                         <li><i class="fa-solid fa-house"></i><a href="{% url "home" %}">Inicio</a></li>
@@ -43,7 +44,7 @@
                 </ul>
 
                     <ul class="d-flex flex-column justify-content-center">
-                    <li><i class="fa-solid fa-right-from-bracket"></i><a href="{% url "logout" %}">Logout</a></li>
+                    <li><i class="fa-solid fa-right-from-bracket"></i><a href="{% url "logout" %}">Cerrar sesión</a></li>
                 </ul>
 
             </nav>
