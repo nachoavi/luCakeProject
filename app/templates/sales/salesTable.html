@@ -21,9 +21,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-
-            </tr>
+            {% for data in sales %}
+                <tr>
+                    <td>{{data.id}}</td>
+                    <td>{{data.product.name}}</td>
+                    <td>{{data.amount}}</td>
+                    <td>{{data.saleDate}}</td>
+                    <td>{{data.subtotal}}</td>
+                    <td>{{data.iva}}</td>
+                    <td>{{data.total}}</td>
+                </tr>        
+            {% endfor %}
         </tbody>
     </table>
 </div>

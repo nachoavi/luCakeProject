@@ -11,3 +11,12 @@ def get_role(request):
     return {
         "role": role
     }
+
+def get_low_stock(request):
+    low_stock = request.session.get("low_stock")
+
+    return {
+        "low_stock": low_stock
+    }
+
+

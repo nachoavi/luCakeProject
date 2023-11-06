@@ -66,7 +66,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "app.context_processors.get_username",
-                "app.context_processors.get_role"
+                "app.context_processors.get_role",
+                "app.context_processors.get_low_stock",
             ],
         },
     },
@@ -110,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 

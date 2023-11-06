@@ -4,18 +4,20 @@
 {% block content %}
 
 <div>
-    <form>
+    <form method="POST">
+      {% csrf_token %}
         <div>
             <label for="inputUserType" class="form-label">Seleccionar producto</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Seleccione un producto</option>
-              <option value="1">Ejemplo 1</option>
-              <option value="2">Ejemplo 2</option>
+            <select class="form-select" name="product_selected" aria-label="Select">
+              <option selected value="-1">Seleccione un producto</option>
+              {% for data in products %}
+                <option value="{{data.id}}">{{data.name}} - {{data.stock}}</option>
+              {% endfor %}
             </select>
           </div>
         <div class="mb-3">
-          <label for="inputLastName" class="form-label">Cantidad</label>
-          <input type="number" class="form-control" id="inputLastName">
+          <label for="input_amount" class="form-label">Cantidad</label>
+          <input type="number" name="product_quantity" class="form-control" id="input_amount">
         </div>
 
         <div class="text-center pt-4">

@@ -1,6 +1,8 @@
 from django.shortcuts import render,get_object_or_404,redirect
+from django.utils import timezone
 from .models import *
 import bcrypt
+import math
 
 # Create your views here.
 
@@ -44,10 +46,18 @@ def baseHTML(request):
 
 def home(request):
     user_auth = request.session.get("isAuthenticated")
+    products = ProductsInventory.objects.all()
+
     if user_auth is False:
         return redirect("/signin")
         
     else:
+        low_stock = ""
+        for data in products:
+            if data.stock < 3:
+                low_stock = data.name
+        request.session["low_stock"] = low_stock
+
         return render(request,'home.html')
 
     
@@ -184,17 +194,35 @@ def deleteProducts(request,id):
 
 def salesTable(request):
     role = request.session.get("role")
-    
+    sold_products = Sales.objects.all()
     if role == "Admin" or role == "NormalUser":
-        return render(request,'sales/salesTable.html')
+        return render(request,'sales/salesTable.html', {"sales": sold_products})
     else:
         return redirect("/")
 
 def sell(request):
     role = request.session.get("role")
-    
+    products_data = ProductsInventory.objects.all()
     if role == "Admin" or role == "NormalUser":
-        return render(request,'sales/sell.html')
+        if request.method == "GET":
+            return render(request,'sales/sell.html', {"products": products_data})
+        else:
+            product_selected = request.POST["product_selected"]
+            product_quantity = int(request.POST["product_quantity"]) 
+            product = ProductsInventory.objects.get(id=product_selected)
+
+            print(type(product_quantity))
+            product.stock -= product_quantity
+
+            product_subtotal = product.price * product_quantity
+            product_total = product.price * product_quantity + (product.price * 0.19)
+
+            sale = Sales(product=ProductsInventory(id=product_selected), amount=product_quantity, saleDate=timezone.now(), subtotal=product_subtotal, iva=19, total=product_total, seller=UserCollaborator(id=request.session["id_user"]))
+            sale.save()
+            product.save()
+
+            
+            return redirect("/sales")
     else:
         return redirect("/")
 
@@ -349,6 +377,19 @@ def costOfSales(request):
         if request.method == 'GET':
             return render(request,'salesPriceCalculator/form.html')
         else:
-            pass
+            raw_material = float(request.POST["raw_material"])
+            labour = float(request.POST["labour"])
+            indirect_costs = float(request.POST["indirect_costs"])
+            indirect_expenses = float(request.POST["indirect_expenses"])
+            utility_margin = float(request.POST["utility_margin"]) / 100
+
+            total_cost = sum([raw_material, labour, indirect_costs, indirect_expenses])
+            print(total_cost)
+            print(utility_margin)
+            price_sale = (total_cost / (1 - utility_margin))
+
+            return render(request,'salesPriceCalculator/form.html', {"price_sale": price_sale})
+
+
     else:
         return redirect("/")

@@ -9,17 +9,23 @@
 
 <div>
     <form id="precioVentaForm" method="POST">
-        <label class="form-label" for="materiaPrima">Costo de Materia Prima</label>
-        <input class="form-control" type="number" id="rawMaterial" name="rawMaterial" step="1" required>
+        {% csrf_token %}
+        <label class="form-label" for="materiaPrima">Costo de Materia Prima:</label>
+        <input class="form-control" type="number" id="rawMaterial" name="raw_material" step="any" required>
 
         <label class="form-label" for="manoDeObra">Costo de Mano de Obra:</label>
-        <input class="form-control" type="number" id="labour" name="labour" step="1" required>
+        <input class="form-control" type="number" id="labour" name="labour" step="any" required>
 
         <label class="form-label" for="costosIndirectos">Costos Indirectos:</label>
-        <input class="form-control" type="number" id="costosIndirectos" name="indirectCosts" step="1" required>
+        <input class="form-control" type="number" id="costosIndirectos" name="indirect_costs" step="any" required>
 
         <label class="form-label" for="gastosOperativos">Gastos Operativos:</label>
-        <input class="form-control" type="number" id="gastosOperativos" name="indirectExpenses" step="1" required>
+        <input class="form-control" type="number" id="gastosOperativos" name="indirect_expenses" step="any" required>
+
+        
+        <label class="form-label" for="gastosOperativos">Margen de utilidad (%):</label>
+        <input class="form-control" type="number" id="gastosOperativos" name="utility_margin" step="aby" required>
+
 
         <div>
             <button type="submit" class="btn btn-primary text-center mt-4">Calcular</button>
@@ -27,6 +33,19 @@
     </form>
 
 </div>
+
+
+    {% if price_sale %}
+
+        <div class="mt-5 w-100 d-flex justify-content-center">
+            <div class="alert alert-success d-flex flex-column justify-content-center align-items-center">
+                <h6 class="fw-bold">¡Listo!</h6>
+                <p>Aquí tienes tu costo de venta: ${{price_sale}}</p>
+            </div>
+        
+        </div>
+    
+    {% endif %}
 
 
 {% endblock content %}
