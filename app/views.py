@@ -9,6 +9,23 @@ import json
 def signin(request):
     user_auth = request.session.get("isAuthenticated")
 
+    try:
+        users = UserCollaborator.objects.get(username="admin")
+    except:
+        bytes = "admin".encode("utf-8")
+        salt = bcrypt.gensalt()
+        hash = bcrypt.hashpw(bytes, salt)
+        admin = UserCollaborator(
+        name='Admin',
+        lastname='Admin',
+        email="admin@gmail.com",
+        username="admin",
+        password=hash,
+        role="Admin"
+    )
+        admin.save()
+
+
     if user_auth is None:
         request.session["isAuthenticated"] = False
 

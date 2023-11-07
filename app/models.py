@@ -11,7 +11,7 @@ class CategoryProduct(models.Model):
 class ProductsInventory(models.Model):
     name = models.CharField(max_length=100,null=False)
     price = models.PositiveIntegerField(null=False)
-    category = models.ForeignKey(CategoryProduct, on_delete=models.PROTECT)
+    category = models.ForeignKey(CategoryProduct, on_delete=models.CASCADE)
     elabDate = models.DateField()
     expDate = models.DateField()
     stock = models.PositiveIntegerField(null=False)
@@ -52,13 +52,13 @@ class UserCollaborator(models.Model):
 
     
 class Sales(models.Model):
-    product = models.ForeignKey(ProductsInventory, on_delete=models.PROTECT)
+    product = models.ForeignKey(ProductsInventory, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(null=False)
     saleDate = models.DateTimeField(auto_now_add=True)
     subtotal = models.PositiveIntegerField(null=False)
     iva = models.PositiveBigIntegerField(null=False)
     total = models.PositiveIntegerField(null=False)
-    seller = models.ForeignKey(UserCollaborator,on_delete=models.PROTECT)
+    seller = models.ForeignKey(UserCollaborator,on_delete=models.CASCADE)
     
     
          
