@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'lucakeproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-flag = True
+flag = False
 
 if flag:
     DATABASES = {

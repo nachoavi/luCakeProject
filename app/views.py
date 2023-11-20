@@ -67,7 +67,7 @@ def home(request):
     user_auth = request.session.get("isAuthenticated")
     products = ProductsInventory.objects.all()
 
-    if user_auth is False:
+    if not user_auth:
         return redirect("/signin")
         
     else:

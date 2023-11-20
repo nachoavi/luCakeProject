@@ -39,13 +39,11 @@
                         <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'clientContacts'%}">Clientes</a></li>
                         <li><i class="fa-solid fa-users-between-lines fa-sm"></i><a href="{%url 'suppliersTable'%}">Proovedores</a></li>
                         <li><i class="fa-solid fa-calculator"></i><a href="{%url 'costOfSales'%}">Costo de venta</a></li>
-                    {% else %}
-                        <li>¿Hola?</li>
                     {% endif %}
                 </ul>
 
                     <ul class="d-flex flex-column justify-content-center">
-                    <li><i class="fa-solid fa-right-from-bracket"></i><a href="{% url "logout" %}">Cerrar sesión</a></li>
+                    <li class="mt-5"><i class="fa-solid fa-right-from-bracket"></i><a href="{% url "logout" %}">Cerrar sesión</a></li>
                 </ul>
 
             </nav>
