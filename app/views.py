@@ -151,6 +151,22 @@ def deleteUser(request,id):
     else:
         return redirect("/")
     
+def categories(request):
+    categories_data = CategoryProduct.objects.all()
+    return render(request, "categories/categories.html", {"categories": categories_data})
+
+def add_categorie(request):
+    if request.method == "GET":
+        return render(request, "categories/categories_form.html")
+    else:
+        categorie_name = request.POST.get("categorie_name")
+        if not categorie_name:
+            return render(request, "categories/categories_form.html", {"error": "No has agregado ninguna categoría"})
+        else:
+            new_categorie = CategoryProduct(name=categorie_name)
+            new_categorie.save()
+        return redirect("/categories")
+
 def productsTable(request):
     role = request.session.get("role")
     if role == "Admin" or role == "NormalUser":
@@ -227,22 +243,40 @@ def sell(request):
         if request.method == "GET":
             return render(request,'sales/sell.html', {"products": products_data})
         else:
-            product_selected = request.POST["product_selected"]
-            product_quantity = int(request.POST["product_quantity"]) 
-            product = ProductsInventory.objects.get(id=product_selected)
+            try:
 
-            print(type(product_quantity))
-            product.stock -= product_quantity
+                for key, value in request.POST.items():
+                    if key.startswith('product_selected_'):
+                        product_id = value
+                        quantity_key = f'product_quantity_{key.split("_")[-1]}'
+                        product_quantity = int(request.POST.get(quantity_key, 0))
 
-            product_subtotal = product.price * product_quantity
-            product_total = product.price * product_quantity + (product.price * 0.19)
-
-            sale = Sales(product=ProductsInventory(id=product_selected), amount=product_quantity, saleDate=timezone.now(), subtotal=product_subtotal, iva=19, total=product_total, seller=UserCollaborator(id=request.session["id_user"]))
-            sale.save()
-            product.save()
+                                    
+                        product = ProductsInventory.objects.get(id=product_id)
+                        product.stock -= product_quantity
+                        product.save()
 
             
-            return redirect("/sales")
+                        product_subtotal = product.price * product_quantity
+                        product_total = product.price * product_quantity + (product.price * 0.19)
+
+        
+                        sale = Sales(
+                            product=product,
+                            amount=product_quantity,
+                            saleDate=timezone.now(),
+                            subtotal=product_subtotal,
+                            iva=19,
+                            total=product_total,
+                            seller=UserCollaborator(id=request.session["id_user"])
+                        )
+                        sale.save()
+
+        
+        
+                return redirect("/sales")
+            except ValueError:
+                return render(request,'sales/sell.html', {"products": products_data})
     else:
         return redirect("/")
 

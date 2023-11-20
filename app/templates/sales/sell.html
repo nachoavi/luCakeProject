@@ -6,19 +6,26 @@
 <div>
     <form method="POST">
       {% csrf_token %}
-        <div>
-            <label for="inputUserType" class="form-label">Seleccionar producto</label>
-            <select class="form-select" name="product_selected" aria-label="Select">
-              <option selected value="-1">Seleccione un producto</option>
-              {% for data in products %}
-                <option value="{{data.id}}">{{data.name}} - {{data.stock}}</option>
-              {% endfor %}
-            </select>
-          </div>
+      <div class="product-entry">
+        <label for="inputUserType" class="form-label">Seleccionar producto</label>
+        <select class="form-select" name="product_selected_1" aria-label="Select">
+          <option selected value="-1">Seleccione un producto</option>
+          {% for data in products %}
+            <option value="{{data.id}}">{{data.name}} - {{data.stock}}</option>
+          {% endfor %}
+        </select>
         <div class="mb-3">
           <label for="input_amount" class="form-label">Cantidad</label>
-          <input type="number" name="product_quantity" class="form-control" id="input_amount">
+          <input type="number" name="product_quantity_1" class="form-control" id="input_amount">
         </div>
+      </div>
+
+
+        <div class="more-products" id="more-products">
+
+        </div>
+
+        <button class="btn btn-success" type="button" id="btnProduct">Agregar otro producto</button>
 
         <div class="text-center pt-4">
           <a class="btn btn-primary" href="{% url 'salesTable'%}">Volver</a>
@@ -26,6 +33,33 @@
         </div>
 
       </form>
+
+      <script>
+        let productCounter = 1;
+        const btnProduct = document.getElementById("btnProduct");
+
+        const moreProducts = document.getElementById("more-products")
+        productCounter++
+
+        btnProduct.addEventListener("click", () => {
+          moreProducts.innerHTML += `
+          <div class="product-entry">
+            <label for="inputUserType" class="form-label">Seleccionar producto</label>
+            <select class="form-select" name="product_selected_${productCounter}" aria-label="Select">
+              <option selected value="-1">Seleccione un producto</option>
+              {% for data in products %}
+                <option value="{{data.id}}">{{data.name}} - {{data.stock}}</option>
+              {% endfor %}
+            </select>
+            <div class="mb-3">
+              <label for="input_amount" class="form-label">Cantidad</label>
+              <input type="number" name="product_quantity_${productCounter}" class="form-control" id="input_amount">
+            </div>
+          </div>
+        `;
+        })
+        
+      </script>
 
 </div>
 

@@ -1,0 +1,29 @@
+{%extends 'base.html'%}
+
+{% block content %}
+
+<div class="mb-5">
+    <h4>Categorias</h4>
+</div>
+
+<div class="w-50">
+    {% if categories %}
+
+    <div class="list-group">
+        {% for data in categories %}
+            <button type="button" class="list-group-item list-group-item-action w-50">{{data.name}}</button>
+        {% endfor %}
+
+      </div>
+    
+    {% else %}
+
+    <p class="alert alert-warning w-50 text-center">No existen categorías</p>
+
+    {% endif %}
+
+    <a href="{% url "add_categories" %}" class="btn btn-success mt-5">Agregar categoría</a>
+</div>
+
+
+{% endblock content %}
