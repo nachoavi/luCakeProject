@@ -8,32 +8,48 @@
         {% csrf_token %}  
         <div class="mb-3">
           <label for="inputName" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="inputName" name="name">
+          <input type="text" class="form-control" id="inputName" name="name" maxlength="50" required>
         </div>
         <div class="mb-3">
           <label for="inputLastName" class="form-label">Apellido</label>
-          <input type="text" class="form-control" id="inputLastName" name="lastname">
+          <input type="text" class="form-control" id="inputLastName" name="lastname" maxlength="50" required>
         </div>
         <div class="mb-3">
           <label for="inputEmail" class="form-label">Correo</label>
-          <input type="email" class="form-control" id="inputEmail" name="email">
+          <input type="email" class="form-control" id="inputEmail" name="email" maxlength="100" required>
         </div>
+        {% if errorEmail %}
+        <div class="mb-3">
+          <ul>
+              <li class="text-danger">{{errorEmail}}</li>
+          </ul>
+        </div>
+        {% endif %}
         <div class="mb-3">
           <label for="inputUsername" class="form-label">Nombre de usuario</label>
-          <input type="text" class="form-control" id="inputUsername" name="username">
+          <input type="text" class="form-control" id="inputUsername" name="username" maxlength="25" required>
         </div>
+        {% if errorUsername %}
+        <div class="mb-3">
+          <ul>
+              <li class="text-danger">{{errorUsername}}</li>
+          </ul>
+        </div>
+        {% endif %}
         <div class="mb-3">
           <label for="inputPassword" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="exampleInputPassword" name="password"> 
+          <input type="password" class="form-control" id="exampleInputPassword" name="password" maxlength="100" minlength="5" required> 
         </div>
         <div>
           <label for="inputUserType" class="form-label">Tipo de usuario</label name="role">
-          <select class="form-select" aria-label="Default select example" name="role">
+          <select class="form-select" aria-label="Default select example" name="role" required>
             <option selected>Seleccione un tipo de usuario</option>
             <option value="{{normalUser}}">Normal</option>
             <option value="{{admin}}">Administrador</option>
           </select>
         </div>
+
+        
 
         <div class="text-center pt-4">
           <a class="btn btn-primary" href="{% url 'usersTable'%}">Volver</a>

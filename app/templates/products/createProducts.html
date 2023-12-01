@@ -8,15 +8,15 @@
       {% csrf_token %}
         <div class="mb-3">
           <label for="inputName" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="inputName" name="name">
+          <input type="text" class="form-control" id="inputName" name="name" maxlength="30" minlength="4" required>
         </div>
         <div class="mb-3">
           <label for="inputPrice" class="form-label">Precio</label>
-          <input type="number" class="form-control" id="inputPrice" name="price">
+          <input type="number" class="form-control" id="inputPrice" name="price" maxlength="7" min="1" required>
         </div>
         <div class="mb-3">
           <label for="inputCategory" class="form-label">Categoria</label>
-          <select class="form-select" name="category" id="" name="category">
+          <select class="form-select" name="category" id="" name="category" required>
           {%for category in categorys%}
             <option value="{{category.id}}">{{category.name}}</option>
           {% endfor %}
@@ -24,15 +24,15 @@
         </div>
         <div class="mb-3">
           <label for="inputElabDate" class="form-label">Fecha de elaboración</label>
-          <input type="date" class="form-control" id="inputElabDate" name="elabDate">
+          <input type="date" class="form-control" id="inputElabDate" name="elabDate" required>
         </div>
         <div class="mb-3">
           <label for="inputExpDate" class="form-label">Fecha de caducidad</label>
-          <input type="date" class="form-control" id="inputExpDate" name="expDate">
+          <input type="date" class="form-control" id="inputExpDate" name="expDate" required> 
         </div>
         <div class="mb-3">
           <label for="inputStock" class="form-label">Stock</label>
-          <input type="number" class="form-control" id="inputStock" name="stock">
+          <input type="number" class="form-control" id="inputStock" name="stock" maxlength="6" min="0" required>
         </div>
         
         <div class="text-center pt-4">

@@ -102,6 +102,17 @@ def createUser(request):
         if request.method == 'GET':       
             return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser})
         else:
+            errorMesaggeUsername = 'El nombre de usuario que has ingresado no está disponible'
+            errorMesaggeEmail = 'El email que has ingresado ya se encuentra registrado'
+            users = UserCollaborator.objects.all()
+            for user in users:
+                if user.username == request.POST['username'] and user.email == request.POST['email']:
+                    return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser,'errorUsername':errorMesaggeUsername,'errorEmail':errorMesaggeEmail})
+                elif user.username == request.POST['username']:
+                    return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser,'errorUsername':errorMesaggeUsername})
+                elif user.email == request.POST['email']:
+                    return render(request,'users/createUser.html',{'admin':admin, 'normalUser':normalUser,'errorEmail':errorMesaggeEmail})
+                
             password = str(request.POST['password'])
             bytes = password.encode("utf-8")
             salt = bcrypt.gensalt()
@@ -250,9 +261,14 @@ def sell(request):
                         product_id = value
                         quantity_key = f'product_quantity_{key.split("_")[-1]}'
                         product_quantity = int(request.POST.get(quantity_key, 0))
-
-                                    
                         product = ProductsInventory.objects.get(id=product_id)
+                        if product.stock <= 0:
+                            errorStock = 'No hay stock del producto'
+                            return render(request,'sales/sell.html', {"products": products_data,'errorStock': errorStock})
+                        if product_quantity > product.stock:
+                            errorStock = 'No hay suficiente stock para vender esta cantidad'
+                            return render(request,'sales/sell.html', {"products": products_data,'errorStock': errorStock})
+                        
                         product.stock -= product_quantity
                         product.save()
 

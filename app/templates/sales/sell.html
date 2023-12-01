@@ -16,8 +16,15 @@
         </select>
         <div class="mb-3">
           <label for="input_amount" class="form-label">Cantidad</label>
-          <input type="number" name="product_quantity_1" class="form-control" id="input_amount">
+          <input type="number" name="product_quantity_1" class="form-control" id="input_amount" min="1" required>
         </div>
+        {% if errorStock %}
+        <div class="mb-3">
+          <ul>
+              <li class="text-danger">{{errorStock}}</li>
+          </ul>
+        </div>
+        {% endif %}
       </div>
 
 

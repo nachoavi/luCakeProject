@@ -11,7 +11,7 @@
       {% csrf_token %}
         <div class="mb-3 w-50">
           <label for="inputName" class="form-label">Nombre</label>
-          <input type="text" name="categorie_name" class="form-control" id="inputName">
+          <input type="text" name="categorie_name" class="form-control" id="inputName" required>
         </div>
         {% if error %}
           <div class="alert alert-danger">{{error}}</div>
